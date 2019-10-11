@@ -1,5 +1,6 @@
 #!/usr/bin/python
 import moviepy.editor as mpy
+import moviepy.video.fx.all as vfx
 from mutagen.mp3 import MP3
 from gtts import gTTS 
 import textwrap
@@ -8,12 +9,18 @@ import sys
 
 language = 'en'
 TEXT_FILE = './speech.txt' # Text file must be in ASCII format
+BACKGROUND_IMAGE = 'epicurus.jpg' # Leave as '', if you want to have solid color background
+BACKGROUND_IMAGE_POSITION = ('center','top')
+BACKGROUND_IMAGE_RESIZE = 2
 BACKGROUND_COLOR = (255, 255, 255)
-VIDEO_SIZE = (1028, 640)
+
+TEXT_POSITION = ('center','center')
 TEXT_COLUMN_WIDTH = 50
-FONT_FAMILY = 'Xolonium-Bold'
-FONT_COLOR = 'black'
 TEXT_ALIGN = 'West' # Options: West, Center, East
+FONT_FAMILY = 'Xolonium-Bold'
+FONT_COLOR = 'red'
+
+VIDEO_SIZE = (1028, 640)
 OUTPUT_FILE = 'video_with_python.webm'
 
 # Open the text file    
@@ -33,17 +40,20 @@ txt = 10*"\n" +txt + 10*"\n"
 
 # Fix problems with ASCII code
 printable = set(string.printable)
-audio_txt = [filter(lambda x: x in printable, origin_txt)]
+audio_txt = filter(lambda x: x in printable, origin_txt)
 
 # Create audio and get audio duration
 myobj = gTTS(text=audio_txt, lang=language, slow=False) 
 myobj.save("audio.mp3")
-audio.append(mpy.AudioFileClip("audio.mp3"))
+audio = mpy.AudioFileClip("audio.mp3")
 duration = MP3("audio.mp3").info.length
 
 # Create the Text clip
 text = mpy.TextClip(txt,color=FONT_COLOR, align='West',fontsize=26,
                     font=FONT_FAMILY, method='label')
+
+if len(BACKGROUND_IMAGE) > 0:
+    bg = mpy.ImageClip(BACKGROUND_IMAGE)
 
 # Scroll the text at the right speed
 line_height = 30
@@ -55,11 +65,17 @@ moving_txt= text.fl(fl, apply_to=['mask'])
 # Create the video clip
 clip = mpy.CompositeVideoClip(
     [
-        moving_txt.set_position('center')
+        vfx.resize(bg.set_position(BACKGROUND_IMAGE_POSITION), BACKGROUND_IMAGE_RESIZE),
+        moving_txt.set_position(TEXT_POSITION)
+    ]
+    if len(BACKGROUND_IMAGE) > 0 else
+    [
+        moving_txt.set_position(TEXT_POSITION)
     ],
     size=VIDEO_SIZE).\
     on_color(
-        color=BACKGROUND_COLOR
+        color=BACKGROUND_COLOR,
         col_opacity=1).set_duration(duration).set_audio(audio)
 
 clip.write_videofile(OUTPUT_FILE, fps=10)
+    #use_bgclip=True if len(BACKGROUND_IMAGE) > 0 else False,
