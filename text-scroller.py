@@ -10,11 +10,11 @@ import sys
 language = 'en'
 TEXT_FILE = './speech.txt' # Text file must be in ASCII format
 BACKGROUND_IMAGE = 'epicurus.jpg' # Leave as '', if you want to have solid color background
-BACKGROUND_IMAGE_POSITION = ('center','top')
+BACKGROUND_IMAGE_POSITION = ('center','top') # Options: (See TEXT_POSITION. It's the same options)
 BACKGROUND_IMAGE_RESIZE = 2
 BACKGROUND_COLOR = (255, 255, 255)
 
-TEXT_POSITION = ('center','center')
+TEXT_POSITION = ('center','center') # Options, for the x and y axes: <Integer for position in x or y axis>, 'center', 'top', 'bottom', 'left', 'right'
 TEXT_COLUMN_WIDTH = 50
 TEXT_ALIGN = 'West' # Options: West, Center, East
 FONT_FAMILY = 'Xolonium-Bold'
