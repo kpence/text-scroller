@@ -2,6 +2,7 @@ import moviepy.editor as mpy
 from mutagen.mp3 import MP3
 from gtts import gTTS 
 import textwrap
+import string
 
 language = 'en'
 BLUE = (59/255, 89/255, 152/255)
@@ -9,32 +10,39 @@ WHITE = (255, 255, 255)
 VIDEO_SIZE = (640, 480)
 
 f = open("speech.txt","r")
-audio_txt = f.read()
+origin_txt = f.read()
+printable = set(string.printable)
+audio_txt = [filter(lambda x: x in printable, origin_txt)]
 
-txt = "\n".join(textwrap.wrap(audio_txt,10))
+wrapped_txt = textwrap.wrap(origin_txt,55)
+txt_height = len(wrapped_txt)
+txt = "\n".join(wrapped_txt)
 # Add blanks
 txt = 10*"\n" +txt + 10*"\n"
 
+audio_clips = []
+duration = 0
 
-# Passing the text and language to the engine,  
-# here we have marked slow=False. Which tells  
-# the module that the converted audio should  
-# have a high speed 
-myobj = gTTS(text=audio_txt, lang=language, slow=False) 
-  
-# Saving the converted audio in a mp3 file named 
-# welcome  
-myobj.save("audio.mp3") 
-audio = mpy.AudioFileClip("audio.mp3")
-duration = MP3("audio.mp3").info.length
+for i in range(len(audio_txt)):
+    myobj = gTTS(text=audio_txt[i], lang=language, slow=False) 
+    myobj.save("audio"+str(i)+".mp3")
+    audio_clips.append(mpy.AudioFileClip("audio"+str(i)+".mp3"))
+    duration += MP3("audio"+str(i)+".mp3").info.length
+
+audio = mpy.concatenate_audioclips(audio_clips)
+
 
 
 #text = mpy.VideoClip(render_text, duration=10)
-text = mpy.TextClip(txt,color='black', align='West',fontsize=25,
+text = mpy.TextClip(txt,color='black', align='West',fontsize=26,
                     font='Xolonium-Bold', method='label')
 
 
-txt_speed = 27
+# duration per line
+line_height = 35
+txt_speed = float(line_height) * float(txt_height) / float(duration)
+print(txt_speed)
+
 fl = lambda gf,t : gf(t)[int(txt_speed*t):int(txt_speed*t)+VIDEO_SIZE[1],:]
 moving_txt= text.fl(fl, apply_to=['mask'])
 
