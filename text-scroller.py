@@ -21,6 +21,9 @@ TEXT_ALIGN = 'West' # Options: West, Center, East
 FONT_FAMILY = 'Xolonium-Bold'
 FONT_COLOR = 'red'
 
+TITLE_TEXT = '' # Leave as '', if you don't want a title
+TITLE_POSITION = ('center', 'top')
+
 OUTPUT_FILE = 'video_with_python.webm'
 
 # Open the text file    
@@ -51,6 +54,9 @@ duration = MP3("audio.mp3").info.length
 # Create the Text clip
 text = mpy.TextClip(txt,color=FONT_COLOR, align='West',fontsize=26,
                     font=FONT_FAMILY, method='label')
+
+#title_txt = mpy.TextClip(TITLE_TEXT,color=FONT_COLOR, align='West',fontsize=26,
+                    #font=FONT_FAMILY, method='label')
 
 if len(BACKGROUND_IMAGE) > 0:
     bg = mpy.ImageClip(BACKGROUND_IMAGE)
