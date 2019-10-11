@@ -1,0 +1,2 @@
+install: 
+gTTS, moviepy, setuptools, mutagen
