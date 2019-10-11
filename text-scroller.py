@@ -14,6 +14,7 @@ import sys
 language = 'en'
 VIDEO_SIZE = (1028, 640)
 TEXT_FILE = './speech.txt' # Text file must be in ASCII format
+AUDIO_FILE = '' # Leave as '', if you want to generate Text-To-Speech audio file
 BACKGROUND_IMAGE = 'epicurus.jpg' # Leave as '', if you want to have solid color background
 BACKGROUND_IMAGE_POSITION = ('center','top') # Options: (See TEXT_POSITION. It's the same options)
 BACKGROUND_IMAGE_RESIZE = (VIDEO_SIZE[0],VIDEO_SIZE[1]) # Examples: (460,720) <- New resolution, 0.6 <- width and heigth multiplied by 0.6
@@ -50,10 +51,14 @@ printable = set(string.printable)
 audio_txt = filter(lambda x: x in printable, origin_txt)
 
 # Create audio and get audio duration
-myobj = gTTS(text=audio_txt, lang=language, slow=False) 
-myobj.save("audio.mp3")
-audio = AudioFileClip("audio.mp3")
-duration = MP3("audio.mp3").info.length
+audiofn = "audio.mp3"
+if len(AUDIO_FILE) == 0:
+    myobj = gTTS(text=audio_txt, lang=language, slow=False) 
+    myobj.save(audiofn)
+else:
+    audiofn = AUDIO_FILE
+audio = AudioFileClip(audiofn)
+duration = MP3(audiofn).info.length
 
 # Create the Text clip
 text = TextClip(txt,color=FONT_COLOR, align='West',fontsize=26,
