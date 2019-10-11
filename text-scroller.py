@@ -9,8 +9,9 @@ WHITE = (255, 255, 255)
 VIDEO_SIZE = (640, 480)
 
 f = open("speech.txt","r")
-txt = "\n".join(textwrap.wrap(f.read(),10))
+audio_txt = f.read()
 
+txt = "\n".join(textwrap.wrap(audio_txt,10))
 # Add blanks
 txt = 10*"\n" +txt + 10*"\n"
 
@@ -19,7 +20,7 @@ txt = 10*"\n" +txt + 10*"\n"
 # here we have marked slow=False. Which tells  
 # the module that the converted audio should  
 # have a high speed 
-myobj = gTTS(text=txt, lang=language, slow=False) 
+myobj = gTTS(text=audio_txt, lang=language, slow=False) 
   
 # Saving the converted audio in a mp3 file named 
 # welcome  
