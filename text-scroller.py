@@ -1,6 +1,10 @@
 #!/usr/bin/python
-import moviepy.editor as mpy
-import moviepy.video.fx.all as vfx
+#import moviepy.editor as mpy
+import moviepy.video.fx.resize as vfx
+from moviepy.video.VideoClip import ImageClip, TextClip
+from moviepy.audio.io.AudioFileClip import AudioFileClip
+from moviepy.video.io.VideoFileClip import VideoFileClip
+from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 from mutagen.mp3 import MP3
 from gtts import gTTS 
 import textwrap
@@ -48,18 +52,18 @@ audio_txt = filter(lambda x: x in printable, origin_txt)
 # Create audio and get audio duration
 myobj = gTTS(text=audio_txt, lang=language, slow=False) 
 myobj.save("audio.mp3")
-audio = mpy.AudioFileClip("audio.mp3")
+audio = AudioFileClip("audio.mp3")
 duration = MP3("audio.mp3").info.length
 
 # Create the Text clip
-text = mpy.TextClip(txt,color=FONT_COLOR, align='West',fontsize=26,
+text = TextClip(txt,color=FONT_COLOR, align='West',fontsize=26,
                     font=FONT_FAMILY, method='label')
 
-#title_txt = mpy.TextClip(TITLE_TEXT,color=FONT_COLOR, align='West',fontsize=26,
+#title_txt = TextClip(TITLE_TEXT,color=FONT_COLOR, align='West',fontsize=26,
                     #font=FONT_FAMILY, method='label')
 
 if len(BACKGROUND_IMAGE) > 0:
-    bg = mpy.ImageClip(BACKGROUND_IMAGE)
+    bg = ImageClip(BACKGROUND_IMAGE)
 
 # Scroll the text at the right speed
 line_height = 30
@@ -69,7 +73,7 @@ fl = lambda gf,t : gf(t)[int(txt_speed*t):int(txt_speed*t)+VIDEO_SIZE[1],:]
 moving_txt= text.fl(fl, apply_to=['mask'])
 
 # Create the video clip
-clip = mpy.CompositeVideoClip(
+clip = CompositeVideoClip(
     [
         vfx.resize(bg.set_position(BACKGROUND_IMAGE_POSITION), BACKGROUND_IMAGE_RESIZE),
         moving_txt.set_position(TEXT_POSITION)
