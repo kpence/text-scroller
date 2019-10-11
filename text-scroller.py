@@ -5,20 +5,24 @@ import textwrap
 import string
 
 language = 'en'
-BLUE = (59/255, 89/255, 152/255)
 WHITE = (255, 255, 255)
-VIDEO_SIZE = (640, 480)
+VIDEO_SIZE = (1028, 640)
 
 f = open("speech.txt","r")
 origin_txt = f.read()
+
+wrapper = textwrap.TextWrapper()
+wrapper.width = 50
+txt_height = -1
+txt = ''
+for pg in origin_txt.splitlines():
+    pg_wrap = wrapper.wrap(pg)
+    txt += "\n" + "\n".join(pg_wrap)
+txt_height = txt.count('\n')
+txt = 10*"\n" +txt + 10*"\n"
+
 printable = set(string.printable)
 audio_txt = [filter(lambda x: x in printable, origin_txt)]
-
-wrapped_txt = textwrap.wrap(origin_txt,50)
-txt_height = len(wrapped_txt)
-txt = "\n".join(wrapped_txt)
-# Add blanks
-txt = 10*"\n" +txt + 10*"\n"
 
 audio_clips = []
 duration = 0
@@ -33,7 +37,6 @@ audio = mpy.concatenate_audioclips(audio_clips)
 
 
 
-#text = mpy.VideoClip(render_text, duration=10)
 text = mpy.TextClip(txt,color='black', align='West',fontsize=26,
                     font='Xolonium-Bold', method='label')
 
@@ -56,4 +59,6 @@ clip = mpy.CompositeVideoClip(
         color=WHITE,
         col_opacity=1).set_duration(duration).set_audio(audio)
 
+print(txt_height)
+print(txt)
 clip.write_videofile('video_with_python.webm', fps=10)
