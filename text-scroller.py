@@ -14,7 +14,7 @@ origin_txt = f.read()
 printable = set(string.printable)
 audio_txt = [filter(lambda x: x in printable, origin_txt)]
 
-wrapped_txt = textwrap.wrap(origin_txt,55)
+wrapped_txt = textwrap.wrap(origin_txt,50)
 txt_height = len(wrapped_txt)
 txt = "\n".join(wrapped_txt)
 # Add blanks
@@ -39,7 +39,7 @@ text = mpy.TextClip(txt,color='black', align='West',fontsize=26,
 
 
 # duration per line
-line_height = 35
+line_height = 30
 txt_speed = float(line_height) * float(txt_height) / float(duration)
 print(txt_speed)
 
