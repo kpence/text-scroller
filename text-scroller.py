@@ -1,6 +1,7 @@
 import moviepy.editor as mpy
 from mutagen.mp3 import MP3
 from gtts import gTTS 
+import textwrap
 
 language = 'en'
 BLUE = (59/255, 89/255, 152/255)
@@ -8,7 +9,7 @@ WHITE = (255, 255, 255)
 VIDEO_SIZE = (640, 480)
 
 f = open("speech.txt","r")
-txt = f.read()
+txt = "\n".join(textwrap.wrap(f.read(),10))
 
 # Add blanks
 txt = 10*"\n" +txt + 10*"\n"
