@@ -13,9 +13,6 @@ TEXT_FILE = './speech.txt' # Text file must be in ASCII format
 BACKGROUND_IMAGE = 'epicurus.jpg' # Leave as '', if you want to have solid color background
 BACKGROUND_IMAGE_POSITION = ('center','top') # Options: (See TEXT_POSITION. It's the same options)
 BACKGROUND_IMAGE_RESIZE = (VIDEO_SIZE[0],VIDEO_SIZE[1]) # Examples: (460,720) <- New resolution, 0.6 <- width and heigth multiplied by 0.6
->>> myClip.resize(width=800) # height computed automatically.
->>> myClip.resize(lambda t : 1+0.02*t) # slow swelling of the clip
-
 BACKGROUND_COLOR = (255, 255, 255)
 
 TEXT_POSITION = ('center','center') # Options, for the x and y axes: <Integer for position in x or y axis>, 'center', 'top', 'bottom', 'left', 'right'
