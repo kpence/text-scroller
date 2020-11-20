@@ -1,5 +1,4 @@
 #!/usr/bin/python
-#import moviepy.editor as mpy
 import moviepy.video.fx.resize as vfx
 from moviepy.video.VideoClip import ImageClip, TextClip
 from moviepy.audio.io.AudioFileClip import AudioFileClip
@@ -7,6 +6,7 @@ from moviepy.video.io.VideoFileClip import VideoFileClip
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 from mutagen.mp3 import MP3
 from gtts import gTTS 
+import numpy as np
 import textwrap
 import string
 import sys

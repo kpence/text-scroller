@@ -1,2 +1,7 @@
 install: 
-gTTS, moviepy, setuptools, mutagen
+gTTS, moviepy, setuptools, mutagen, numpy
+
+
+
+Simple instructions
+https://docs.python-guide.org/starting/installation/
